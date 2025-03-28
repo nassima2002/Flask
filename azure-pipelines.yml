@@ -1,0 +1,24 @@
+trigger:
+- main  # Déclenche sur la branche main
+
+pool:
+  vmImage: 'ubuntu-latest'  # Utilisation d'-un agent hébergé par Microsoft
+
+steps:
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.x'
+    addToPath: true
+
+- script: |
+    python -m venv venv
+    source venv/bin/activate
+    pip install -r requirements.txt
+  displayName: 'Installer les dépendances'
+
+- task: SnykSecurityScan@1
+  inputs:
+    serviceConnectionEndpoint: 'Snyk Service Connection'
+    testType: 'app'
+    monitorWhen: 'always'
+    failOnIssues: true

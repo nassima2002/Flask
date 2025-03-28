@@ -1,0 +1,30 @@
+name: Flask API CI/CD with Snyk
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run tests
+        run: python -m pytest tests/
+
+      - name: Run Snyk scan
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        run: |
+          npm install -g snyk
+          snyk test --file=requirements.txt --package-manager=pip
+          snyk monitor --file=requirements.txt
