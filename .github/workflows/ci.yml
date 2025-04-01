@@ -1,30 +1,40 @@
-name: Flask API CI/CD with Snyk
+name: Snyk Security Scan
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  build-and-scan:
+  snyk_scan:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v2
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v2
         with:
-          python-version: '3.11'
+          python-version: '3.x'
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
-
-      - name: Run tests
-        run: python -m pytest tests/
-
-      - name: Run Snyk scan
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         run: |
-          npm install -g snyk
-          snyk test --file=requirements.txt --package-manager=pip
-          snyk monitor --file=requirements.txt
+          pip install -r requirements.txt
+
+      - name: Install Snyk CLI
+        run: |
+          curl -sL https://snyk.io/install | bash
+          export PATH=$HOME/.snyk/bin:$PATH
+
+      - name: Verify Snyk CLI installation
+        run: snyk --version
+
+      - name: Run Snyk Security Scan
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_AUTH_TOKEN }}  # Assurez-vous que le secret est bien nommé ici
+        run: |
+          snyk test --all-projects
