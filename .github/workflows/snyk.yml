@@ -20,26 +20,16 @@ jobs:
       # Étape 2 : Installer les dépendances Python
       - name: Install dependencies
         run: |
-          python -m venv venv
-          source venv/bin/activate
-          pip install --upgrade pip
+          python -m venv venv  # Crée un environnement virtuel
+          source venv/bin/activate  # Active l'environnement virtuel
+          pip install --upgrade pip  # Met à jour pip
           pip install -r requirements.txt  # Installe les dépendances du projet
 
-      # Étape 3 : Installer le CLI de Snyk
-      - name: Install Snyk CLI
-        run: |
-          curl -sL https://snyk.io/install | bash  # Télécharge et installe Snyk
-          export PATH=$PATH:$HOME/.npm-global/bin  # Ajoute Snyk au PATH
-
-      # Étape 4 : Vérification des vulnérabilités avec Snyk
+      # Étape 3 : Vérification des vulnérabilités avec Snyk
       - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/python@master  # Utilisation de l'action officielle de Snyk pour Python
         continue-on-error: true  # Continue même si une vulnérabilité est détectée
         env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}  # Utilise le secret SNYK_TOKEN pour authentifier Snyk
-        run: |
-          snyk test --all-projects  # Lance le test de sécurité
-
-      # Étape 5 : Optionnel - Surveiller l'état des vulnérabilités avec Snyk
-      - name: Monitor with Snyk (optional)
-        run: |
-          snyk monitor --all-projects  # Pour suivre les vulnérabilités des dépendances dans le projet
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}  # Utilisation du token secret Snyk pour l'authentification
+        with:
+          command: test  # Lance le test de sécurité sur les dépendances du projet
