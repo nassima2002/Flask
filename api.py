@@ -1,4 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
 
@@ -28,5 +32,6 @@ def add_student():
     
     return redirect(url_for('index'))
 
-if __name__ == '__main__':
-    app.run(debug=True)  # Le mode debug est activé pour afficher les erreurs détaillées
+
+if __name__ == "__main__":
+    app.run(debug=os.getenv('FLASK_ENV') == 'development')  # Active le mode debug uniquement en développement
