@@ -1,4 +1,4 @@
-Flask==3.1.0
+Flask==0.12  # Version vulnérable à plusieurs failles XSS et RCE
 flask-sqlalchemy
 flask-login
 flask-migrate
