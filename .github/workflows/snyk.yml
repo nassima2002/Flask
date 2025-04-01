@@ -1,42 +1,40 @@
-name: Example workflow for Python using Snyk
+name: Snyk Security Scan
 
 on:
   push:
     branches:
-      - main  # Déclenche le workflow lors d'un push sur la branche main
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  security:
+  snyk_scan:
     runs-on: ubuntu-latest
 
     steps:
       # Étape 1 : Checkout du code du dépôt
       - name: Checkout code
-        uses: actions/checkout@v2  # Assurez-vous d'utiliser une version stable de l'action
+        uses: actions/checkout@v2
 
       # Étape 2 : Installer les dépendances Python
       - name: Install dependencies
         run: |
-          python -m venv venv  # Créer un environnement virtuel
-          source venv/bin/activate  # Activer l'environnement virtuel
-          pip install --upgrade pip  # Mettre à jour pip pour éviter des erreurs de version
-          pip install -r requirements.txt  # Installer les dépendances à partir de requirements.txt
+          python -m venv venv
+          source venv/bin/activate
+          pip install --upgrade pip
+          pip install -r requirements.txt  # Installe les dépendances du projet
 
-      # Étape 3 : Installer Snyk CLI
-      - name: Install Snyk CLI
-        run: |
-          curl -sL https://snyk.io/install | bash  # Télécharge et installe Snyk
-
-      # Étape 4 : Lancer Snyk pour vérifier les vulnérabilités
+      # Étape 3 : Vérification des vulnérabilités avec Snyk
       - name: Run Snyk to check for vulnerabilities
-        uses: snyk/actions/python@master  # Utilise l'action officielle de Snyk pour Python
-        continue-on-error: true  # Pour s'assurer que l'upload du SARIF se fasse même en cas d'erreurs
+        uses: snyk/actions/python@master  # Utilisation de l'action officielle Snyk
+        continue-on-error: true  # Continue même si une vulnérabilité est détectée
         env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}  # Le secret Snyk Token pour l'authentification
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}  # Utilise le secret SNYK_TOKEN pour authentifier Snyk
         with:
-          command: test  # Lance le test de sécurité sur les dépendances
-          
-      # Optionnel : Monitor les vulnérabilités avec Snyk pour garder un suivi
+          command: test  # Lancer le test de sécurité
+
+      # Étape 4 : Optionnel - Surveiller l'état des vulnérabilités avec Snyk
       - name: Monitor with Snyk (optional)
         run: |
-          snyk monitor --all-projects  # Permet de suivre l'état de sécurité des dépendances
+          snyk monitor --all-projects  # Pour suivre les vulnérabilités des dépendances dans le projet
