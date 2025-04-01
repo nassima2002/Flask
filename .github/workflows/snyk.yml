@@ -1,6 +1,6 @@
 name: Example workflow for Python using Snyk
 
-on: 
+on:
   push:
     branches:
       - main  # Déclenche le workflow lors d'un push sur la branche main
@@ -19,9 +19,15 @@ jobs:
         run: |
           python -m venv venv  # Créer un environnement virtuel
           source venv/bin/activate  # Activer l'environnement virtuel
+          pip install --upgrade pip  # Mettre à jour pip pour éviter des erreurs de version
           pip install -r requirements.txt  # Installer les dépendances à partir de requirements.txt
 
-      # Étape 3 : Lancer Snyk pour vérifier les vulnérabilités
+      # Étape 3 : Installer Snyk CLI
+      - name: Install Snyk CLI
+        run: |
+          curl -sL https://snyk.io/install | bash  # Télécharge et installe Snyk
+
+      # Étape 4 : Lancer Snyk pour vérifier les vulnérabilités
       - name: Run Snyk to check for vulnerabilities
         uses: snyk/actions/python@master  # Utilise l'action officielle de Snyk pour Python
         continue-on-error: true  # Pour s'assurer que l'upload du SARIF se fasse même en cas d'erreurs
@@ -29,3 +35,8 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}  # Le secret Snyk Token pour l'authentification
         with:
           command: test  # Lance le test de sécurité sur les dépendances
+          
+      # Optionnel : Monitor les vulnérabilités avec Snyk pour garder un suivi
+      - name: Monitor with Snyk (optional)
+        run: |
+          snyk monitor --all-projects  # Permet de suivre l'état de sécurité des dépendances
