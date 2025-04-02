@@ -28,7 +28,7 @@ jobs:
       # Étape 3 : Vérification des vulnérabilités avec Snyk
       - name: Run Snyk to check for vulnerabilities
         uses: snyk/actions/python@master  # Utilisation de l'action officielle de Snyk pour Python
-        continue-on-error: true  # Continue même si une vulnérabilité est détectée
+        continue-on-error: false  # Continue même si une vulnérabilité est détectée
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}  # Utilisation du token secret Snyk pour l'authentification
         with:
