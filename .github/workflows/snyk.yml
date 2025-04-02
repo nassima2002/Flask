@@ -32,4 +32,5 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}  # Utilisation du token secret Snyk pour l'authentification
         with:
-          command: test  # Lance le test de sécurité sur les dépendances du projet
+          command: test --file=requirements.txt
+
