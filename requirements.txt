@@ -1,5 +1,5 @@
-Flask
-requests
+Flask==0.12  
+requests==2.19.0  
 flask-sqlalchemy
 flask-login
 flask-migrate
