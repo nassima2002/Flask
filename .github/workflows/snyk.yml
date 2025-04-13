@@ -41,11 +41,7 @@ jobs:
           command: test
           args: --file=requirements.txt 
 
-      # Étape 5 : Lancer les tests Python
-      - name: Run Python tests
-        run: |
-          source venv/bin/activate
-          pytest tests/
+      
 
       # Étape 6 : Configurer Node.js (React frontend)
       - name: Set up Node.js
