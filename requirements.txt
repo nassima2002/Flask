@@ -1,5 +1,5 @@
-Flask==0.12  # Version vulnérable
-requests==2.19.0  # Version vulnérable (CVE-2018-18074)
+Flask==0.12  
+requests==2.19.0  
 flask-sqlalchemy
 flask-login
 flask-migrate
