@@ -1,24 +1,18 @@
 {
   "name": "devops_flask",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "directories": {
-    "test": "tests"
-  },
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-
-    "lodash": "4.17.20",         
-    "express": "4.16.0",         
-    "minimist": "0.0.8",         
-    "jquery": "3.4.0"          
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "snyk": "^1.1234.0"
   }
 }
