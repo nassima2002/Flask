@@ -1,29 +1,19 @@
-# Étape 1 : Build du frontend React
+# Étape 1 : Construire le frontend React
 FROM node:20 AS frontend
-
-WORKDIR /app/frontend
-
-COPY frontend-react/ ./       
+WORKDIR /frontend
+COPY frontend-react/package*.json ./
 RUN npm install
-RUN npm run build             # Crée un build optimisé de React
+COPY frontend-react/ ./
+RUN npm run build
 
-# Étape 2 : Build du backend Python
-FROM python:3.11-bookworm AS backend
-
+# Étape 2 : Construire le backend Flask
+FROM python:3.11-slim AS backend
 WORKDIR /app
-
-# Copie du backend
 COPY requirements.txt .
-RUN pip install --upgrade pip && pip install -r requirements.txt
-
-# Copier le code backend
+RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
-# Copier le build React dans le backend (ex: dossier static pour Flask)
-COPY --from=frontend /app/frontend/build ./frontend-build
+# Copier les fichiers générés par le frontend dans le backend
+COPY --from=frontend /frontend/build /app/frontend
 
-# Port exposé (selon ton app, exemple 5000 pour Flask)
-EXPOSE 5000
-
-# Commande de lancement (à adapter à ton backend)
-CMD ["python", "app.py"]
+CMD ["gunicorn", "-b", "0.0.0.0:8000", "app:app"]

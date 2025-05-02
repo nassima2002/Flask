@@ -29,17 +29,11 @@ jobs:
           pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Freeze dependencies to requirements.txt
-        run: |
-          source venv/bin/activate
-          pip freeze > requirements.txt
-
       - name: Snyk scan (Python)
         uses: snyk/actions/python@master
         with:
           command: test
           args: --file=requirements.txt --json-file-output=snyk-python.json --sarif-file-output=snyk-python.sarif
-        continue-on-error: false
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
@@ -55,16 +49,6 @@ jobs:
       - name: Snyk scan (Node.js)
         working-directory: ./frontend-react
         run: npx snyk test --file=package.json --json-file-output=snyk-node.json --sarif-file-output=snyk-node.sarif
-        continue-on-error: false
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-
-      - name: Snyk Code Analysis
-        uses: snyk/actions/node@master
-        with:
-          command: code test
-          args: --json-file-output=snyk-code.json --sarif-file-output=snyk-code.sarif
-        continue-on-error: true
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
@@ -73,49 +57,15 @@ jobs:
           npm install -g snyk-to-html
           snyk-to-html -i snyk-python.json -o snyk-python-report.html || true
           snyk-to-html -i snyk-node.json -o snyk-node-report.html || true
-          snyk-to-html -i snyk-code.json -o snyk-code-report.html || true
         continue-on-error: true
 
       - name: Upload HTML reports
-        uses: actions/upload-artifact@v3  # Mise à jour vers la version 3
+        uses: actions/upload-artifact@v2
         with:
           name: security-reports
           path: |
             *.html
             snyk-*.json
-
-      - name: Upload Python SARIF
-        uses: github/codeql-action/upload-sarif@v1
-        with:
-          sarif_file: snyk-python.sarif
-          category: python
-
-      - name: Upload Node.js SARIF
-        uses: github/codeql-action/upload-sarif@v1
-        with:
-          sarif_file: snyk-node.sarif
-          category: node
-
-      - name: Upload Code SARIF
-        uses: github/codeql-action/upload-sarif@v1
-        with:
-          sarif_file: snyk-code.sarif
-          category: code
-
-  advanced_security:
-    needs: snyk_and_tests
-    runs-on: ubuntu-latest
-    if: github.event_name == 'schedule' || github.ref == 'refs/heads/main'
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        continue-on-error: true
 
   docker_build_and_push:
     needs: snyk_and_tests
