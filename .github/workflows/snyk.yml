@@ -58,8 +58,12 @@ jobs:
           snyk-to-html -i snyk-node.json -o snyk-node-report.html || true
         continue-on-error: true
 
+      # Debugging step to list files
+      - name: List files before upload
+        run: ls -alh
+
       - name: Upload HTML reports
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         with:
           name: security-reports
           path: |
