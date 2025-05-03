@@ -7,24 +7,21 @@
     "test": "tests"
   },
   "scripts": {
-  "start": "react-scripts start",
-  "build": "react-scripts build",
-  "test": "react-scripts test",
-  "eject": "react-scripts eject"
-}
-
-  
-  ,
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-  "react": "^19.1.0",
-  "react-dom": "^19.1.0",
-  "lodash": "4.17.21",  
-  "express": "4.21.2",  
-  "minimist": "0.2.4",  
-  "jquery": "3.5.0"    
-}
-
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "lodash": "4.17.21",
+    "express": "4.21.2",
+    "minimist": "0.2.4",
+    "jquery": "3.5.0",
+    "react-scripts": "^5.0.0"   
+  }
 }
