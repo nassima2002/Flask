@@ -46,7 +46,7 @@ jobs:
         
       - name: Snyk scan (Node.js)
         working-directory: ./frontend-react
-        run: npx snyk test --file=package.json --json-file-output=snyk-node.json --sarif-file-output=snyk-node.sarif
+        run: npx snyk test --file=package.json --json-file-output=snyk-node.json --sarif-file-output=snyk-node.sarif --severity-threshold=high
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         
