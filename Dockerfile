@@ -13,7 +13,7 @@ COPY frontend-react/ ./
 RUN npm run build
 
 # Étape 2 : Construire le backend Flask
-FROM python:3.11-slim AS backend
+FROM python:3.13.3-slim AS backend
 WORKDIR /app
 
 # Copier le fichier requirements.txt et installer les dépendances
