@@ -1,10 +1,10 @@
-Flask==1.0.2                  # version vulnérable à des attaques XSS et CSRF
-gunicorn==19.9.0              # version affectée par CVE-2019-11232
-requests==2.19.1              # version vulnérable à des attaques de redirection non sécurisée
-flask-sqlalchemy==2.1         # version ancienne, failles potentielles liées à SQL Injection
-flask-login==0.2.11           # version avec problème d’authentification persistante
-flask-migrate==2.0.0          # ancienne version non maintenue
-flask-wtf==0.14.2             # version vulnérable (CSRF Token issue)
-flask-testing==0.6.2          # ancienne version
-python-dotenv==0.10.1         # CVE-2019-7608 : code exécutable depuis un `.env` malveillant
-pytest==4.6.0                 # version vulnérable à l’exécution de code malveillant via plugins
+Flask==2.2.5
+gunicorn==23.0.0
+requests==2.32.2
+flask-sqlalchemy==2.5.1
+flask-login==0.6.2
+flask-migrate==4.0.4
+flask-wtf==1.0.1
+flask-testing==0.8.1
+python-dotenv==0.21.0
+pytest==8.3.5
