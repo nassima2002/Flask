@@ -1,6 +1,6 @@
-Flask==1.0.2                  # version vulnérable à des attaques XSS et CSRF
-gunicorn==19.9.0              # version affectée par CVE-2019-11232
-requests==2.19.1              # version vulnérable à des attaques de redirection non sécurisée
+Flask==2.2.5                  # version vulnérable à des attaques XSS et CSRF
+gunicorn==23.0.0              # version affectée par CVE-2019-11232
+requests==2.32.2              # version vulnérable à des attaques de redirection non sécurisée
 flask-sqlalchemy==2.1         # version ancienne, failles potentielles liées à SQL Injection
 flask-login==0.2.11           # version avec problème d’authentification persistante
 flask-migrate==2.0.0          # ancienne version non maintenue
@@ -8,3 +8,7 @@ flask-wtf==0.14.2             # version vulnérable (CSRF Token issue)
 flask-testing==0.6.2          # ancienne version
 python-dotenv==0.10.1         # CVE-2019-7608 : code exécutable depuis un `.env` malveillant
 pytest==4.6.0                 # version vulnérable à l’exécution de code malveillant via plugins
+idna>=3.7 # not directly required, pinned by Snyk to avoid a vulnerability
+urllib3>=1.26.19 # not directly required, pinned by Snyk to avoid a vulnerability
+werkzeug>=3.0.6 # not directly required, pinned by Snyk to avoid a vulnerability
+zipp>=3.19.1 # not directly required, pinned by Snyk to avoid a vulnerability
