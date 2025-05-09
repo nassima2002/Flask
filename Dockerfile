@@ -12,11 +12,10 @@ COPY frontend-react/ ./
 # Construire le frontend React
 RUN npm run build
 
-# Étape 2 : Construire le backend Flask
+# Étape 2 : Construire le backend Flask est test
 FROM python:3.11-slim AS backend
 WORKDIR /app
 
-# Copier le fichier requirements.txt et installer les dépendances
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
