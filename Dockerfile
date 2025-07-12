@@ -13,7 +13,7 @@ COPY frontend-react/ ./
 RUN npm run build
 
 # Étape 2 : Construire le backend Flask est test
-FROM python:3.11-slim AS backend
+FROM python:3.13.5-slim AS backend
 WORKDIR /app
 
 COPY requirements.txt ./
